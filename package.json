@@ -1,0 +1,53 @@
+{
+  "name": "@nuxx/torn-fetch",
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.13.1",
+  "description": "provides a wrapper around openapi-fetch that throws an error when Torn's API returns an error",
+  "license": "Unlicense",
+  "author": "nuxx [3054747]",
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "torn",
+    "api",
+    "fetch",
+    "typescript",
+    "openapi"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nuxx-3054747/torn-fetch.git"
+  },
+  "scripts": {
+    "get-schema": "curl -A 'nuxx-torn-fetch' https://www.torn.com/swagger/openapi.json > ./src/openapi.json && openapi-typescript ./src/openapi.json -o ./src/torn-api.ts",
+    "build": "tsup",
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "ci": "pnpm get-schema && pnpm lint && pnpm type-check && pnpm test && pnpm build"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.14.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "eslint": "^9.31.0",
+    "globals": "^16.3.0",
+    "openapi-typescript": "^7.8.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.37.0",
+    "vitest": "^2.1.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  }
+}

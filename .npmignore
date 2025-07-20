@@ -1,0 +1,26 @@
+# Source files (already compiled in dist/)
+src/
+
+# Development files
+eslint.config.js
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+pnpm-workspace.yaml
+TESTING.md
+
+# Git files
+.git/
+.gitignore
+
+# Package manager files
+node_modules/
+pnpm-lock.yaml
+
+# Temporary files
+/tmp
+/out-tsc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
