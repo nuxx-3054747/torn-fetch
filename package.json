@@ -1,6 +1,6 @@
 {
   "name": "@nuxx/torn-fetch",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "packageManager": "pnpm@10.13.1",
   "description": "provides a wrapper around openapi-fetch that throws an error when Torn's API returns an error",
   "license": "Unlicense",
