@@ -1,14 +1,21 @@
 {
   "name": "@nuxx/torn-fetch",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "packageManager": "bun@1.2.23",
   "description": "provides a wrapper around openapi-fetch that throws an error when Torn's API returns an error",
   "license": "Unlicense",
   "author": "nuxx [3054747]",
   "type": "module",
   "source": "src/index.ts",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "COPYING",
+    "README.md"
+  ],
   "keywords": [
     "torn",
     "api",
@@ -20,6 +27,13 @@
     "type": "git",
     "url": "https://github.com/nuxx-3054747/torn-fetch.git"
   },
+  "homepage": "https://github.com/nuxx-3054747/torn-fetch#readme",
+  "bugs": {
+    "url": "https://github.com/nuxx-3054747/torn-fetch/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "get-schema": "curl -A 'nuxx-torn-fetch' https://www.torn.com/swagger/openapi.json > ./src/openapi.json && openapi-typescript ./src/openapi.json -o ./src/torn-api.ts",
     "build": "tsup",
@@ -28,7 +42,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "ci": "bun run get-schema && bun run lint && bun run type-check && bun run test && bun run build"
+    "ci": "bun run get-schema && bun run lint && bun run type-check && bun run test && bun run build",
+    "prepublishOnly": "bun run ci",
+    "prepack": "bun run build"
   },
   "dependencies": {
     "openapi-fetch": "^0.14.1"
@@ -48,7 +64,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   }
 }

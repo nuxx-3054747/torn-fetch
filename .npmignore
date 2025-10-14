@@ -6,16 +6,18 @@ eslint.config.js
 tsconfig.json
 tsup.config.ts
 vitest.config.ts
-pnpm-workspace.yaml
 TESTING.md
+CLAUDE.md
 
 # Git files
 .git/
 .gitignore
+.github/
 
 # Package manager files
 node_modules/
 pnpm-lock.yaml
+bun.lock
 
 # Temporary files
 /tmp

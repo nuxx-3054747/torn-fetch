@@ -12,7 +12,7 @@ A TypeScript wrapper around `openapi-fetch` that provides a better developer exp
 ## Installation
 
 ```bash
-npm install @nuxx/use-torn-fetch
+npm install @nuxx/torn-fetch
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ npm install @nuxx/use-torn-fetch
 ### Basic Usage
 
 ```typescript
-import { useTornFetch } from '@nuxx/use-torn-fetch'
+import { useTornFetch } from '@nuxx/torn-fetch'
 
 try {
   const userAttacks = await useTornFetch( 
@@ -34,7 +34,7 @@ try {
 ```
 
 ```typescript
-import { useTornFetch } from '@nuxx/use-torn-fetch'
+import { useTornFetch } from '@nuxx/torn-fetch'
 
 // Use with path parameters
 const attacks = await useTornFetch(
@@ -49,7 +49,7 @@ const attacks = await useTornFetch(
 ```
 
 ```typescript
-import { useTornFetch } from '@nuxx/use-torn-fetch'
+import { useTornFetch } from '@nuxx/torn-fetch'
 
 // Use with query parameters
 const attacks = await useTornFetch(
@@ -69,7 +69,7 @@ const attacks = await useTornFetch(
 The library automatically throws JavaScript errors when the Torn API returns error responses:
 
 ```typescript
-import { useTornFetch } from '@nuxx/use-torn-fetch'
+import { useTornFetch } from '@nuxx/torn-fetch'
 
 try {
   const userAttacks = await useTornFetch( 
@@ -104,28 +104,28 @@ Creates a specialized fetcher function for a specific API endpoint.
 ### Prerequisites
 
 - Node.js 18+
-- pnpm
+- Bun
 
 ### Setup
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Get the latest Torn API schema and build
-pnpm run build
+bun run build
 ```
 
 ### Scripts
 
-- `pnpm run get-schema` - Downloads the latest Torn API OpenAPI schema and generates TypeScript types
-- `pnpm run build` - Builds the project using Parcel
-- `pnpm run lint` - Runs ESLint on the codebase
-- `pnpm run type-check` - Runs TypeScript type checking
-- `pnpm run test` - Runs the test suite
-- `pnpm run test:watch` - Runs tests in watch mode
-- `pnpm run test:coverage` - Runs tests with coverage reporting
-- `pnpm run ci` - Runs the complete CI pipeline (schema, lint, type-check, test, build)
+- `bun run get-schema` - Downloads the latest Torn API OpenAPI schema and generates TypeScript types
+- `bun run build` - Builds the project using tsup
+- `bun run lint` - Runs ESLint on the codebase
+- `bun run type-check` - Runs TypeScript type checking
+- `bun run test` - Runs the test suite
+- `bun run test:watch` - Runs tests in watch mode
+- `bun run test:coverage` - Runs tests with coverage reporting
+- `bun run ci` - Runs the complete CI pipeline (schema, lint, type-check, test, build)
 
 ## Testing
 
@@ -138,9 +138,9 @@ This package includes comprehensive tests with 100% code coverage. The test suit
 
 Run tests with:
 ```bash
-pnpm test              # Run tests once
-pnpm run test:watch    # Run tests in watch mode
-pnpm run test:coverage # Run tests with coverage report
+bun run test              # Run tests once
+bun run test:watch        # Run tests in watch mode
+bun run test:coverage     # Run tests with coverage report
 ```
 
 See [TESTING.md](./TESTING.md) for detailed testing documentation.
@@ -148,7 +148,7 @@ See [TESTING.md](./TESTING.md) for detailed testing documentation.
 ## Project Structure
 
 ```
-use-torn-fetch/
+torn-fetch/
 ├── coverage/                 # Test coverage reports
 ├── dist/                     # Compiled output
 ├── src/
@@ -161,10 +161,10 @@ use-torn-fetch/
 │   └── torn-api.ts          # Generated TypeScript types
 ├── eslint.config.js         # ESLint configuration
 ├── package.json
-├── pnpm-workspace.yaml      # pnpm workspace configuration
 ├── tsconfig.json            # TypeScript configuration
-├── tsup.config.ts           # Build configuration (legacy)
+├── tsup.config.ts           # Build configuration
 ├── vitest.config.ts         # Test configuration
+├── bun.lock                 # Bun lock file
 ├── TESTING.md               # Testing documentation
 └── README.md
 ```
@@ -174,7 +174,7 @@ use-torn-fetch/
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run the full CI pipeline: `pnpm run ci`
+4. Run the full CI pipeline: `bun run ci`
 5. Submit a pull request
 
 All contributions should include appropriate tests and maintain 100% code coverage.
