@@ -1,7 +1,7 @@
 {
   "name": "@nuxx/torn-fetch",
   "version": "0.3.0",
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "bun@1.2.23",
   "description": "provides a wrapper around openapi-fetch that throws an error when Torn's API returns an error",
   "license": "Unlicense",
   "author": "nuxx [3054747]",
@@ -28,7 +28,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "ci": "pnpm get-schema && pnpm lint && pnpm type-check && pnpm test && pnpm build"
+    "ci": "bun run get-schema && bun run lint && bun run type-check && bun run test && bun run build"
   },
   "dependencies": {
     "openapi-fetch": "^0.14.1"
