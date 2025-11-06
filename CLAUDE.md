@@ -10,19 +10,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Development Workflow
 ```bash
-pnpm install              # Install dependencies
-pnpm run get-schema       # Download latest Torn API schema and generate TypeScript types
-pnpm run build            # Build using tsup (outputs to dist/)
-pnpm run lint             # Run ESLint
-pnpm run type-check       # Run TypeScript type checking
-pnpm test                 # Run test suite once
-pnpm run test:watch       # Run tests in watch mode
-pnpm run test:coverage    # Run tests with coverage report
-pnpm run ci               # Full CI pipeline: get-schema, lint, type-check, test, build
+bun install              # Install dependencies
+bun run get-schema       # Download latest Torn API schema and generate TypeScript types
+bun run build            # Build using tsup (outputs to dist/)
+bun run lint             # Run ESLint
+bun run type-check       # Run TypeScript type checking
+bun test                 # Run test suite once
+bun run test:watch       # Run tests in watch mode
+bun run test:coverage    # Run tests with coverage report
+bun run ci               # Full CI pipeline: get-schema, lint, type-check, test, build
 ```
 
 ### Key Workflow Notes
-- Always run `pnpm run get-schema` before building if you need the latest API types
+- Always run `bun run get-schema` before building if you need the latest API types
 - The `get-schema` script downloads `openapi.json` and generates `torn-api.ts` using `openapi-typescript`
 - Tests require 100% code coverage - this is a project standard
 
