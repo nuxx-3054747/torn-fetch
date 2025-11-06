@@ -14,9 +14,9 @@ vi.mock("openapi-fetch", () => ({
 }));
 
 // Import after mocking
-const { useTornFetch } = await import("../index.js");
+const { tornFetch } = await import("../index.js");
 
-describe("useTornFetch error detection", () => {
+describe("tornFetch error detection", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
@@ -36,7 +36,7 @@ describe("useTornFetch error detection", () => {
 		});
 
 		await expect(
-			useTornFetch("test-key", "/user/basic" as any),
+			tornFetch("test-key", "/user/basic" as any),
 		).rejects.toThrow("Invalid API key");
 	});
 
@@ -53,7 +53,7 @@ describe("useTornFetch error detection", () => {
 			error: undefined,
 		});
 
-		const result = await useTornFetch("test-key", "/faction/attacks" as any);
+		const result = await tornFetch("test-key", "/faction/attacks" as any);
 		expect(result).toEqual(validResponseWithErrorProperty);
 	});
 
@@ -79,7 +79,7 @@ describe("useTornFetch error detection", () => {
 			});
 
 			await expect(
-				useTornFetch("test-key", "/faction/basic" as any),
+				tornFetch("test-key", "/faction/basic" as any),
 			).rejects.toThrow(errorCase.error);
 		}
 	});

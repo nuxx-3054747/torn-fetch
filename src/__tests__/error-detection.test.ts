@@ -9,7 +9,7 @@ vi.mock("openapi-fetch", () => ({
 }));
 
 // Import after mocking
-const { useTornFetch } = await import("../index.js");
+const { tornFetch } = await import("../index.js");
 
 describe("Torn API Error Detection Logic", () => {
 	beforeEach(() => {
@@ -23,7 +23,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch("test-key", "/user/basic" as any);
+			const result = await tornFetch("test-key", "/user/basic" as any);
 			expect(result).toBeUndefined();
 		});
 
@@ -33,7 +33,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch("test-key", "/user/basic" as any);
+			const result = await tornFetch("test-key", "/user/basic" as any);
 			expect(result).toBeNull();
 		});
 
@@ -43,7 +43,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch("test-key", "/user/basic" as any);
+			const result = await tornFetch("test-key", "/user/basic" as any);
 			expect(result).toBe("some string response");
 		});
 
@@ -53,7 +53,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch("test-key", "/user/basic" as any);
+			const result = await tornFetch("test-key", "/user/basic" as any);
 			expect(result).toBe(42);
 		});
 
@@ -69,7 +69,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch("test-key", "/user/basic" as any);
+			const result = await tornFetch("test-key", "/user/basic" as any);
 			expect(result).toEqual(validResponse);
 		});
 
@@ -85,7 +85,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch("test-key", "/user/basic" as any);
+			const result = await tornFetch("test-key", "/user/basic" as any);
 			expect(result).toEqual(responseWithDifferentErrorStructure);
 		});
 
@@ -103,7 +103,7 @@ describe("Torn API Error Detection Logic", () => {
 			});
 
 			await expect(
-				useTornFetch("test-key", "/user/basic" as any),
+				tornFetch("test-key", "/user/basic" as any),
 			).rejects.toThrow("Invalid API key");
 		});
 
@@ -122,7 +122,7 @@ describe("Torn API Error Detection Logic", () => {
 				});
 
 				await expect(
-					useTornFetch("test-key", "/user/basic" as any),
+					tornFetch("test-key", "/user/basic" as any),
 				).rejects.toThrow(errorCase.error.error);
 			}
 		});
@@ -140,7 +140,7 @@ describe("Torn API Error Detection Logic", () => {
 
 			// This should NOT throw because the error property doesn't match Torn's structure
 			// The defensive checks ensure we validate the full nested structure
-			const result = await useTornFetch("test-key", "/user/basic" as any);
+			const result = await tornFetch("test-key", "/user/basic" as any);
 			expect(result).toEqual(edgeCaseResponse);
 		});
 	});

@@ -9,9 +9,9 @@ vi.mock("openapi-fetch", () => ({
 }));
 
 // Import after mocking
-const { useTornFetch } = await import("../index.js");
+const { tornFetch } = await import("../index.js");
 
-describe("useTornFetch", () => {
+describe("tornFetch", () => {
 	const mockApiKey = "test-api-key-123";
 
 	beforeEach(() => {
@@ -36,7 +36,7 @@ describe("useTornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch(mockApiKey, "/faction/basic" as any);
+			const result = await tornFetch(mockApiKey, "/faction/basic" as any);
 
 			expect(result).toEqual(mockResponseData);
 			expect(mockGet).toHaveBeenCalledWith("/faction/basic", {
@@ -56,7 +56,7 @@ describe("useTornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch(
+			const result = await tornFetch(
 				mockApiKey,
 				"/faction/basic" as any,
 				mockParams,
@@ -87,7 +87,7 @@ describe("useTornFetch", () => {
 			});
 
 			await expect(
-				useTornFetch(mockApiKey, "/faction/basic" as any),
+				tornFetch(mockApiKey, "/faction/basic" as any),
 			).rejects.toThrow("Invalid API key");
 		});
 
@@ -105,7 +105,7 @@ describe("useTornFetch", () => {
 			});
 
 			await expect(
-				useTornFetch(mockApiKey, "/faction/basic" as any),
+				tornFetch(mockApiKey, "/faction/basic" as any),
 			).rejects.toThrow("Faction not found");
 		});
 
@@ -113,7 +113,7 @@ describe("useTornFetch", () => {
 			mockGet.mockRejectedValue(new Error("Network error"));
 
 			await expect(
-				useTornFetch(mockApiKey, "/faction/basic" as any),
+				tornFetch(mockApiKey, "/faction/basic" as any),
 			).rejects.toThrow("Network error");
 		});
 	});
@@ -125,7 +125,7 @@ describe("useTornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch(mockApiKey, "/faction/basic" as any);
+			const result = await tornFetch(mockApiKey, "/faction/basic" as any);
 			expect(result).toBeUndefined();
 		});
 
@@ -136,7 +136,7 @@ describe("useTornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch(mockApiKey, "/faction/basic" as any);
+			const result = await tornFetch(mockApiKey, "/faction/basic" as any);
 			expect(result).toBe(primitiveResponse);
 		});
 
@@ -147,7 +147,7 @@ describe("useTornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await useTornFetch(mockApiKey, "/faction/basic" as any);
+			const result = await tornFetch(mockApiKey, "/faction/basic" as any);
 			expect(result).toEqual(validResponse);
 		});
 	});
@@ -157,7 +157,7 @@ describe("useTornFetch", () => {
 			const customApiKey = "custom-key-xyz";
 			mockGet.mockResolvedValue({ data: {}, error: undefined });
 
-			await useTornFetch(customApiKey, "/faction/basic" as any);
+			await tornFetch(customApiKey, "/faction/basic" as any);
 
 			expect(mockGet).toHaveBeenCalledWith("/faction/basic", {
 				params: undefined,

@@ -29,14 +29,14 @@ bun run ci               # Full CI pipeline: get-schema, lint, type-check, test,
 ## Architecture
 
 ### Core Structure
-The library consists of a single main export (`useTornFetch`) that wraps `openapi-fetch`:
+The library consists of a single main export (`tornFetch`) that wraps `openapi-fetch`:
 
 1. **Type Generation Flow**: `openapi.json` → `openapi-typescript` → `torn-api.ts` (generated types)
 2. **API Client**: Single shared `apiClient` instance created with `openapi-fetch` pointing to `https://api.torn.com/v2`
 3. **Error Detection**: Response data is checked for Torn API error structure (`{ error: { error: string, code: number } }`)
 
 ### Key Files
-- `src/index.ts` - Main library export with `useTornFetch` function and `fetchOrThrowError` helper
+- `src/index.ts` - Main library export with `tornFetch` function and `fetchOrThrowError` helper
 - `src/torn-api.ts` - **Generated file** (do not edit manually), created by `openapi-typescript`
 - `src/openapi.json` - **Downloaded schema** from Torn API
 

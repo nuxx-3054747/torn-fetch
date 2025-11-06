@@ -15,15 +15,32 @@ A TypeScript wrapper around `openapi-fetch` that provides a better developer exp
 npm install @nuxx/torn-fetch
 ```
 
+## Migration from v0.x
+
+If you're upgrading from v0.x, the main export has been renamed from `useTornFetch` to `tornFetch`. The old name still works in v1.x with a deprecation warning, but will be removed in v2.0.0.
+
+**Migration:**
+```typescript
+// Old (v0.x)
+import { useTornFetch } from '@nuxx/torn-fetch'
+const data = await useTornFetch(apiKey, path)
+
+// New (v1.0+)
+import { tornFetch } from '@nuxx/torn-fetch'
+const data = await tornFetch(apiKey, path)
+```
+
+The function signature and behavior are identical.
+
 ## Usage
 
 ### Basic Usage
 
 ```typescript
-import { useTornFetch } from '@nuxx/torn-fetch'
+import { tornFetch } from '@nuxx/torn-fetch'
 
 try {
-  const userAttacks = await useTornFetch( 
+  const userAttacks = await tornFetch( 
     'your-api-key',
     '/user/attacks'
   )
@@ -34,10 +51,10 @@ try {
 ```
 
 ```typescript
-import { useTornFetch } from '@nuxx/torn-fetch'
+import { tornFetch } from '@nuxx/torn-fetch'
 
 // Use with path parameters
-const attacks = await useTornFetch(
+const attacks = await tornFetch(
   'your-api-key',
   '/faction/{id}/chain',
   {
@@ -49,10 +66,10 @@ const attacks = await useTornFetch(
 ```
 
 ```typescript
-import { useTornFetch } from '@nuxx/torn-fetch'
+import { tornFetch } from '@nuxx/torn-fetch'
 
 // Use with query parameters
-const attacks = await useTornFetch(
+const attacks = await tornFetch(
   'your-api-key',
   '/user/attacks',
   {
@@ -69,10 +86,10 @@ const attacks = await useTornFetch(
 The library automatically throws JavaScript errors when the Torn API returns error responses:
 
 ```typescript
-import { useTornFetch } from '@nuxx/torn-fetch'
+import { tornFetch } from '@nuxx/torn-fetch'
 
 try {
-  const userAttacks = await useTornFetch( 
+  const userAttacks = await tornFetch( 
     'invalid-key-abc123',
     '/user/attacks'
   )
@@ -84,9 +101,9 @@ try {
 
 ## API Reference
 
-### `useTornFetch<TPath>(apiKey: string, path: TPath, options?: TParams<TPath>): Promise<TResponse<TPath>>`
+### `tornFetch<TPath>(apiKey: string, path: TPath, options?: TParams<TPath>): Promise<TResponse<TPath>>`
 
-Creates a specialized fetcher function for a specific API endpoint.
+Makes a type-safe call to the Torn API with automatic error handling.
 
 **Parameters:**
 - `apiKey`: Your Torn API key

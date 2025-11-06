@@ -1,6 +1,11 @@
 import createClient from "openapi-fetch";
 import type { paths } from "./torn-api.ts";
 
+// Type declarations for Node.js globals
+declare const console: {
+  warn(message: string): void;
+};
+
 /**
  * Extracts parameter types for a given API path.
  * Includes both query and path parameters expected by the Torn API.
@@ -74,13 +79,13 @@ async function fetchOrThrowError<T extends keyof paths>(
  * @example
  * ```typescript
  * // Basic usage
- * const attacks = await useTornFetch('your-api-key', '/user/attacks')
+ * const attacks = await tornFetch('your-api-key', '/user/attacks')
  * ```
  *
  * @example
  * ```typescript
  * // With path parameters
- * const chain = await useTornFetch(
+ * const chain = await tornFetch(
  *   'your-api-key',
  *   '/faction/{id}/chain',
  *   { path: { id: 33458 } }
@@ -90,7 +95,7 @@ async function fetchOrThrowError<T extends keyof paths>(
  * @example
  * ```typescript
  * // With query parameters
- * const attacks = await useTornFetch(
+ * const attacks = await tornFetch(
  *   'your-api-key',
  *   '/user/attacks',
  *   { query: { limit: 25, from: 1753037683 } }
@@ -101,16 +106,40 @@ async function fetchOrThrowError<T extends keyof paths>(
  * ```typescript
  * // Error handling
  * try {
- *   const data = await useTornFetch('invalid-key', '/user/attacks')
+ *   const data = await tornFetch('invalid-key', '/user/attacks')
  * } catch (error) {
  *   console.error('API Error:', error.message) // "Invalid API key"
  * }
  * ```
+ */
+export async function tornFetch<T extends keyof paths>(
+  apiKey: string,
+  path: T,
+  params?: TParams<T>,
+) {
+  return await fetchOrThrowError(apiKey, path, params);
+}
+
+let deprecationWarningShown = false;
+
+/**
+ * @deprecated Use `tornFetch` instead. This alias will be removed in v2.0.0.
+ *
+ * The `use` prefix conventionally indicates React hooks, but this is a plain
+ * async function. It has been renamed to `tornFetch` for clarity.
+ *
+ * Migration: Replace `useTornFetch` with `tornFetch` - the signature is identical.
  */
 export async function useTornFetch<T extends keyof paths>(
   apiKey: string,
   path: T,
   params?: TParams<T>,
 ) {
-  return await fetchOrThrowError(apiKey, path, params);
+  if (!deprecationWarningShown) {
+    console.warn(
+      "[@nuxx/torn-fetch] useTornFetch is deprecated and will be removed in v2.0.0. Please use tornFetch instead.",
+    );
+    deprecationWarningShown = true;
+  }
+  return tornFetch(apiKey, path, params);
 }
