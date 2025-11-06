@@ -67,7 +67,10 @@ describe("useTornFetch error detection", () => {
 
 		for (const errorCase of testCases) {
 			const errorResponse = {
-				error: errorCase,
+				error: {
+					error: errorCase.error,
+					code: errorCase.code,
+				},
 			};
 
 			mockGet.mockResolvedValue({

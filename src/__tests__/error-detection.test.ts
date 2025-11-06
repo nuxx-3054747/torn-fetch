@@ -139,11 +139,9 @@ describe("Torn API Error Detection Logic", () => {
 			});
 
 			// This should NOT throw because the error property doesn't match Torn's structure
-			// The type assertion (data.data as TError).error.error would fail at runtime
-			// but the condition should prevent us from getting there
-			await expect(async () => {
-				await useTornFetch("test-key", "/user/basic" as any);
-			}).rejects.toThrow(); // This will throw due to trying to access .error.error on a string
+			// The defensive checks ensure we validate the full nested structure
+			const result = await useTornFetch("test-key", "/user/basic" as any);
+			expect(result).toEqual(edgeCaseResponse);
 		});
 	});
 });

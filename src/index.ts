@@ -5,16 +5,14 @@ import type { paths } from "./torn-api.ts";
  * Extracts parameter types for a given API path.
  * Includes both query and path parameters expected by the Torn API.
  */
-type TParams<T extends keyof paths> = Partial<
-	paths[T]["get"]["parameters"]
->;
+type TParams<T extends keyof paths> = Partial<paths[T]["get"]["parameters"]>;
 
 /**
  * Extracts the response type for a given API path.
  * Represents the data returned by a successful API call (200 response).
  */
 type TResponse<T extends keyof paths> =
-	paths[T]["get"]["responses"][200]["content"]["application/json"];
+  paths[T]["get"]["responses"][200]["content"]["application/json"];
 
 /**
  * Represents the structure of a Torn API error response.
@@ -22,7 +20,7 @@ type TResponse<T extends keyof paths> =
 type TError = { error: { error: string; code: number } };
 
 const apiClient = createClient<paths>({
-	baseUrl: "https://api.torn.com/v2",
+  baseUrl: "https://api.torn.com/v2",
 });
 
 /**
@@ -30,24 +28,32 @@ const apiClient = createClient<paths>({
  * @internal
  */
 async function fetchOrThrowError<T extends keyof paths>(
-	apiKey: string,
-	path: keyof paths,
-	params?: Record<string, unknown>,
+  apiKey: string,
+  path: keyof paths,
+  params?: Record<string, unknown>,
 ): Promise<TResponse<T>> {
-	const init = {
-		params,
-		headers: {
-			Authorization: `ApiKey ${apiKey}`,
-		},
-	} as TParams<T>;
+  const init = {
+    params,
+    headers: {
+      Authorization: `ApiKey ${apiKey}`,
+    },
+  } as TParams<T>;
 
-	const data = await apiClient.GET(path, init);
+  const data = await apiClient.GET(path, init);
 
-	if (data.data !== undefined && data.data !== null && typeof data.data === 'object' && "error" in data.data) {
-		throw new Error((data.data as TError).error.error);
-	}
+  if (
+    data.data !== undefined &&
+    data.data !== null &&
+    typeof data.data === "object" &&
+    "error" in data.data &&
+    typeof data.data.error === "object" &&
+    data.data.error !== null &&
+    "error" in data.data.error
+  ) {
+    throw new Error((data.data as TError).error.error);
+  }
 
-	return data.data as Promise<TResponse<T>>;
+  return data.data as TResponse<T>;
 }
 
 /**
@@ -101,10 +107,10 @@ async function fetchOrThrowError<T extends keyof paths>(
  * }
  * ```
  */
-export async function useTornFetch<T extends keyof paths>(apiKey: string, path: T, params?: TParams<T>) {
-	return await fetchOrThrowError(
-		apiKey,
-		path,
-		params,
-	) as TResponse<T>;
+export async function useTornFetch<T extends keyof paths>(
+  apiKey: string,
+  path: T,
+  params?: TParams<T>,
+) {
+  return await fetchOrThrowError(apiKey, path, params);
 }
