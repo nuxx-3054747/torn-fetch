@@ -11,7 +11,6 @@ export default defineConfig({
         'dist/',
         'coverage/',
         'src/torn-api.ts', // Generated file
-        'src/openapi.json', // Downloaded schema
       ],
     },
   },
