@@ -1,24 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-// Mock the entire torn-api module since it's generated
-vi.mock("../torn-api.ts", () => ({
-	// Mock the paths type - this will be overridden by the actual types in tests
-}));
-
-// Mock openapi-fetch before importing our module
-const mockGet = vi.fn();
-vi.mock("openapi-fetch", () => ({
-	default: vi.fn(() => ({
-		GET: mockGet,
-	})),
-}));
+import { beforeEach, describe, expect, it } from "bun:test";
+import { mockGet } from "./setup";
 
 // Import after mocking
 const { tornFetch } = await import("../index.js");
 
 describe("tornFetch error detection", () => {
 	beforeEach(() => {
-		vi.clearAllMocks();
+		mockGet.mockReset();
 	});
 
 	it("should correctly identify Torn API error responses", async () => {
@@ -46,6 +34,12 @@ describe("tornFetch error detection", () => {
 			attacks: [],
 			errors: [], // This is different from the Torn error structure
 			someOtherData: "value",
+			_metadata: {
+				links: {
+					next: null,
+					prev: null,
+				}
+			}
 		};
 
 		mockGet.mockResolvedValue({

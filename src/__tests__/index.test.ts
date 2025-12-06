@@ -1,12 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-// Mock openapi-fetch
-const mockGet = vi.fn();
-vi.mock("openapi-fetch", () => ({
-	default: vi.fn(() => ({
-		GET: mockGet,
-	})),
-}));
+import { beforeEach, describe, expect, it } from "bun:test";
+import { mockGet } from "./setup";
 
 // Import after mocking
 const { tornFetch } = await import("../index.js");
@@ -15,11 +8,7 @@ describe("tornFetch", () => {
 	const mockApiKey = "test-api-key-123";
 
 	beforeEach(() => {
-		vi.clearAllMocks();
-	});
-
-	afterEach(() => {
-		vi.restoreAllMocks();
+		mockGet.mockReset();
 	});
 
 	describe("successful API calls", () => {
@@ -56,11 +45,11 @@ describe("tornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await tornFetch(
+			const result = (await tornFetch(
 				mockApiKey,
 				"/faction/basic" as any,
 				mockParams,
-			);
+			)) as any;
 
 			expect(result).toEqual(mockResponseData);
 			expect(mockGet).toHaveBeenCalledWith("/faction/basic", {
@@ -136,7 +125,7 @@ describe("tornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await tornFetch(mockApiKey, "/faction/basic" as any);
+			const result = (await tornFetch(mockApiKey, "/faction/basic" as any)) as any;
 			expect(result).toBe(primitiveResponse);
 		});
 
@@ -147,7 +136,7 @@ describe("tornFetch", () => {
 				error: undefined,
 			});
 
-			const result = await tornFetch(mockApiKey, "/faction/basic" as any);
+			const result = (await tornFetch(mockApiKey, "/faction/basic" as any)) as any;
 			expect(result).toEqual(validResponse);
 		});
 	});

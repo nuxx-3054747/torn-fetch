@@ -1,19 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-// Mock openapi-fetch to control responses
-const mockGet = vi.fn();
-vi.mock("openapi-fetch", () => ({
-	default: vi.fn(() => ({
-		GET: mockGet,
-	})),
-}));
+import { beforeEach, describe, expect, it } from "bun:test";
+import { mockGet } from "./setup";
 
 // Import after mocking
 const { tornFetch } = await import("../index.js");
 
 describe("Torn API Error Detection Logic", () => {
 	beforeEach(() => {
-		vi.clearAllMocks();
+		mockGet.mockReset();
 	});
 
 	describe('Error condition logic: data.data !== undefined && typeof data.data === "object" && "error" in data.data', () => {
@@ -43,7 +36,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await tornFetch("test-key", "/user/basic" as any);
+			const result = (await tornFetch("test-key", "/user/basic" as any)) as any;
 			expect(result).toBe("some string response");
 		});
 
@@ -53,7 +46,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await tornFetch("test-key", "/user/basic" as any);
+			const result = (await tornFetch("test-key", "/user/basic" as any)) as any;
 			expect(result).toBe(42);
 		});
 
@@ -69,7 +62,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await tornFetch("test-key", "/user/basic" as any);
+			const result = (await tornFetch("test-key", "/user/basic" as any)) as any;
 			expect(result).toEqual(validResponse);
 		});
 
@@ -85,7 +78,7 @@ describe("Torn API Error Detection Logic", () => {
 				error: undefined,
 			});
 
-			const result = await tornFetch("test-key", "/user/basic" as any);
+			const result = (await tornFetch("test-key", "/user/basic" as any)) as any;
 			expect(result).toEqual(responseWithDifferentErrorStructure);
 		});
 
@@ -140,7 +133,7 @@ describe("Torn API Error Detection Logic", () => {
 
 			// This should NOT throw because the error property doesn't match Torn's structure
 			// The defensive checks ensure we validate the full nested structure
-			const result = await tornFetch("test-key", "/user/basic" as any);
+			const result = (await tornFetch("test-key", "/user/basic" as any)) as any;
 			expect(result).toEqual(edgeCaseResponse);
 		});
 	});
