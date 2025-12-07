@@ -1,10 +1,7 @@
 import createClient from "openapi-fetch";
 import type { paths } from "./torn-api.ts";
 
-// Type declarations for Node.js globals
-declare const console: {
-  warn(message: string): void;
-};
+
 
 /**
  * Extracts parameter types for a given API path.
@@ -47,6 +44,12 @@ async function fetchOrThrowError<T extends keyof paths>(
     /* oxlint-disable no-explicit-any */
   } as any);
 
+  // Handle transport/network errors from openapi-fetch
+  if (data.error) {
+    throw data.error;
+  }
+
+  // Check for Torn API error responses
   if (
     data.data !== undefined &&
     data.data !== null &&
@@ -135,7 +138,7 @@ export async function useTornFetch<T extends keyof paths>(
   apiKey: string,
   path: T,
   params?: TParams<T>,
-) {
+): Promise<TResponse<T>> {
   if (!deprecationWarningShown) {
     console.warn(
       "[@nuxx/torn-fetch] useTornFetch is deprecated and will be removed in v2.0.0. Please use tornFetch instead.",
