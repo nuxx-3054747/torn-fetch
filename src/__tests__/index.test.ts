@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "bun:test";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
 import { mockGet } from "./setup";
 
 // Import after mocking
@@ -99,7 +99,11 @@ describe("tornFetch", () => {
 		});
 
 		it("should handle network errors from openapi-fetch", async () => {
-			mockGet.mockRejectedValue(new Error("Network error"));
+			const networkError = new Error("Network error");
+			mockGet.mockResolvedValue({
+				data: undefined,
+				error: networkError,
+			});
 
 			await expect(
 				tornFetch(mockApiKey, "/faction/basic" as any),
@@ -154,6 +158,53 @@ describe("tornFetch", () => {
 					Authorization: `ApiKey ${customApiKey}`,
 				},
 			});
+		});
+	});
+
+	describe("deprecated useTornFetch", () => {
+		it("should show deprecation warning on first use", async () => {
+			// Create a spy before importing to catch the warning
+			const warnSpy = mock(() => {});
+			const originalWarn = console.warn;
+			console.warn = warnSpy;
+
+			// Re-import to get a fresh instance (warning flag is module-scoped)
+			const { useTornFetch } = await import("../index.js");
+
+			mockGet.mockResolvedValue({
+				data: {},
+				error: undefined,
+			});
+
+			await useTornFetch(mockApiKey, "/faction/basic" as any);
+
+			// Check that warning was called
+			expect(warnSpy).toHaveBeenCalledTimes(1);
+			expect(warnSpy).toHaveBeenCalledWith(
+				"[@nuxx/torn-fetch] useTornFetch is deprecated and will be removed in v2.0.0. Please use tornFetch instead.",
+			);
+
+			console.warn = originalWarn;
+		});
+
+		it("should work the same as tornFetch", async () => {
+			const { useTornFetch } = await import("../index.js");
+			const mockResponseData = {
+				ID: 12345,
+				name: "Test Faction",
+			};
+
+			mockGet.mockResolvedValue({
+				data: mockResponseData,
+				error: undefined,
+			});
+
+			const result = (await useTornFetch(
+				mockApiKey,
+				"/faction/basic" as any,
+			)) as any;
+
+			expect(result).toEqual(mockResponseData);
 		});
 	});
 });
