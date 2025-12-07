@@ -180,7 +180,6 @@ torn-fetch/
 ├── package.json
 ├── tsconfig.json            # TypeScript configuration
 ├── tsup.config.ts           # Build configuration
-├── vitest.config.ts         # Test configuration
 ├── bun.lock                 # Bun lock file
 ├── TESTING.md               # Testing documentation
 └── README.md
