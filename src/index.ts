@@ -34,17 +34,18 @@ const apiClient = createClient<paths>({
  */
 async function fetchOrThrowError<T extends keyof paths>(
   apiKey: string,
-  path: keyof paths,
-  params?: Record<string, unknown>,
+  path: T,
+  params?: TParams<T>,
 ): Promise<TResponse<T>> {
-  const init = {
+  // Type assertion needed due to openapi-fetch's complex conditional types
+  // that don't properly infer when params and headers are combined
+  const data = await apiClient.GET(path, {
     params,
     headers: {
       Authorization: `ApiKey ${apiKey}`,
     },
-  } as TParams<T>;
-
-  const data = await apiClient.GET(path, init);
+    /* oxlint-disable no-explicit-any */
+  } as any);
 
   if (
     data.data !== undefined &&
@@ -116,8 +117,8 @@ export async function tornFetch<T extends keyof paths>(
   apiKey: string,
   path: T,
   params?: TParams<T>,
-) {
-  return await fetchOrThrowError(apiKey, path, params);
+): Promise<TResponse<T>> {
+  return fetchOrThrowError<T>(apiKey, path, params);
 }
 
 let deprecationWarningShown = false;
