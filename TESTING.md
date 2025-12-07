@@ -28,13 +28,13 @@ The test suite includes:
 
 ```bash
 # Run tests once
-pnpm test
+bun test
 
 # Run tests in watch mode
-pnpm run test:watch
+bun run test:watch
 
 # Run tests with coverage report
-pnpm run test:coverage
+bun run test:coverage
 ```
 
 ## Coverage
