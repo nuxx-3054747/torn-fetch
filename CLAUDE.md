@@ -49,9 +49,22 @@ The library uses TypeScript path-based generics:
 Parameters are passed as a single object with `query` and `path` properties that match the Torn API expectations.
 
 ### Error Handling Logic
-The error detection (in `fetchOrThrowError` at src/index.ts:29) uses a specific check:
+The error detection (in `fetchOrThrowError`) handles two types of errors:
+1. **Transport/network errors**: Checks `data.error` from openapi-fetch and throws it
+2. **Torn API errors**: Validates the full nested structure `{ error: { error: string, code: number } }`
+
 ```typescript
-if (data.data !== undefined && data.data !== null && typeof data.data === 'object' && "error" in data.data)
+// Handle transport/network errors
+if (data.error) {
+  throw data.error;
+}
+
+// Check for Torn API error responses
+if (data.data !== undefined && data.data !== null && typeof data.data === 'object' && 
+    "error" in data.data && typeof data.data.error === 'object' && 
+    data.data.error !== null && "error" in data.data.error) {
+  throw new Error((data.data as TError).error.error);
+}
 ```
 This ensures we only throw errors for actual Torn API errors, not for null/undefined/primitive responses.
 
@@ -63,11 +76,19 @@ This ensures we only throw errors for actual Torn API errors, not for null/undef
   - `error-detection.test.ts` - Edge cases for error detection logic
   - `error-handling.test.ts` - Torn API error scenarios
 - Generated files (`torn-api.ts`, `openapi.json`) are excluded from coverage
-- Use Vitest with mocking via `vi.mock()`
+- Uses Bun's built-in test runner with mocking via `mock` from `bun:test`
+- Shared mock setup in `src/__tests__/setup.ts` to avoid module cache conflicts
 
 ## Build System
 
-- **tsup** is used for building (not Parcel, despite what README says)
+- **tsup** is used for building
 - Output: ESM format only, minified with Terser
 - Generates both `.js` and `.d.ts` files in `dist/`
 - Build config: `tsup.config.ts`
+
+## Type Narrowing
+
+The library provides full type narrowing based on the path parameter:
+- When you call `tornFetch('/user/basic', ...)`, TypeScript knows the return type is specifically the `/user/basic` response
+- This is achieved by using the generic `T extends keyof paths` and ensuring it flows through `fetchOrThrowError<T>`
+- The `as any` cast on the openapi-fetch call is necessary due to complex conditional types but doesn't affect external type safety

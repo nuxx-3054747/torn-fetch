@@ -1,8 +1,6 @@
 import createClient from "openapi-fetch";
 import type { paths } from "./torn-api.ts";
 
-
-
 /**
  * Extracts parameter types for a given API path.
  * Includes both query and path parameters expected by the Torn API.

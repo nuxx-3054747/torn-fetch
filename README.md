@@ -139,7 +139,7 @@ bun run build
 - `bun run build` - Builds the project using tsup
 - `bun run lint` - Runs ESLint on the codebase
 - `bun run type-check` - Runs TypeScript type checking
-- `bun run test` - Runs the test suite
+- `bun test` - Runs the test suite
 - `bun run test:watch` - Runs tests in watch mode
 - `bun run test:coverage` - Runs tests with coverage reporting
 - `bun run ci` - Runs the complete CI pipeline (schema, lint, type-check, test, build)
@@ -180,7 +180,6 @@ torn-fetch/
 ├── package.json
 ├── tsconfig.json            # TypeScript configuration
 ├── tsup.config.ts           # Build configuration
-├── vitest.config.ts         # Test configuration
 ├── bun.lock                 # Bun lock file
 ├── TESTING.md               # Testing documentation
 └── README.md
